@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-//test2
 namespace DB338Core
 {
     class DB338TransactionMgr
@@ -18,22 +17,22 @@ namespace DB338Core
             tables = new List<IntSchTable>();
         }
 
-        public string[,] Process(List<string> tokens, string type)
+        public string[,] Process(List<string> tokens, string type) //Process function
         {
             string[,] results = new string[1,1];
             bool success;
 
             if (type == "create")
             {
-                success = ProcessCreateTableStatement(tokens);
+                success = ProcessCreateTableStatement(tokens); // implemented
             }
             else if (type == "insert")
             {
-                success = ProcessInsertStatement(tokens);
+                success = ProcessInsertStatement(tokens); // implemented
             }
             else if (type == "select")
             {
-                results = ProcessSelectStatement(tokens);
+                results = ProcessSelectStatement(tokens); // implemented
             }
             else if (type == "alter")
             {
@@ -41,7 +40,7 @@ namespace DB338Core
             }
             else if (type == "delete")
             {
-                results = ProcessDeleteStatement(tokens);
+                results = ProcessDeleteStatement(tokens); // will implement
             }
             else if (type == "drop")
             {
@@ -49,13 +48,15 @@ namespace DB338Core
             }
             else if (type == "update")
             {
-                results = ProcessUpdateStatement(tokens);
+                results = ProcessUpdateStatement(tokens); // will implement
             }
             else
             {
-                results = null;
+                results = null; // wrong syntax?
             }
             //other parts of SQL to do...
+
+            // where, group by, having?
 
             return results;
         }
@@ -64,14 +65,14 @@ namespace DB338Core
         {
             // <Select Stm> ::= SELECT <Columns> <From Clause> <Where Clause> <Group Clause> <Having Clause> <Order Clause>
 
-            List<string> colsToSelect = new List<string>();
+            List<string> colsToSelect = new List<string>(); // list of indices?
             int tableOffset = 0;
 
             for (int i = 1; i < tokens.Count; ++i)
             {
                 if (tokens[i] == "from")
                 {
-                    tableOffset = i + 1;
+                    tableOffset = i + 1; // next is the table to be selected?
                     break;
                 }
                 else if (tokens[i] == ",")
@@ -84,35 +85,35 @@ namespace DB338Core
                 }
             }
 
-            string tableToSelectFrom = tokens[tableOffset];
+            string tableToSelectFrom = tokens[tableOffset]; // table we are selecting from
 
             for (int i = 0; i < tables.Count; ++i)
             {
-                if (tables[i].Name == tableToSelectFrom)
+                if (tables[i].Name == tableToSelectFrom) // found it
                 {
-                    return tables[i].Select(colsToSelect);
+                    return tables[i].Select(colsToSelect); // select worked
                 }
             }
 
-            return null;
+            return null; // select failed
         }
 
         private bool ProcessInsertStatement(List<string> tokens)
         {
             // <Insert Stm> ::= INSERT INTO Id '(' <ID List> ')' VALUES '(' <Expr List> ')'
 
-            string insertTableName = tokens[2];
+            string insertTableName = tokens[2]; // table to insert into
 
             foreach (IntSchTable tbl in tables)
             {
-                if (tbl.Name == insertTableName)
+                if (tbl.Name == insertTableName) // found it
                 {
                     List<string> columnNames = new List<string>();
                     List<string> columnValues = new List<string>();
 
                     int offset = 0;
 
-                    for (int i = 4; i < tokens.Count; ++i)
+                    for (int i = 4; i < tokens.Count; ++i) // loops through '(' <ID List> ')'
                     {
                         if (tokens[i] == ")")
                         {
@@ -129,11 +130,11 @@ namespace DB338Core
                         }
                     }
 
-                    for (int i = offset; i < tokens.Count; ++i)
+                    for (int i = offset; i < tokens.Count; ++i) // loops through VALUES '(' <Expr List> ')'
                     {
-                        if (tokens[i] == ")")
+                        if (tokens[i] == ")") 
                         {
-                            break;
+                            break;  // looped through entire insert statement
                         }
                         else if (tokens[i] == ",")
                         {
@@ -147,17 +148,17 @@ namespace DB338Core
 
                     if (columnNames.Count != columnValues.Count)
                     {
-                        return false;
+                        return false; // insert failed
                     }
                     else
                     {
                         tbl.Insert(columnNames, columnValues);
-                        return true;
+                        return true; // insert worked
                     }
                 }
             }
 
-            return false;
+            return false; // insert failed
         }
 
         private bool ProcessCreateTableStatement(List<string> tokens)
@@ -172,19 +173,19 @@ namespace DB338Core
                 if (tbl.Name == newTableName)
                 {
                     //cannot create a new table with the same name
-                    return false;
+                    return false; // only time create will not work
                 }
             }
 
-            List<string> columnNames = new List<string>();
+            List<string> columnNames = new List<string>(); // just like insert?!
             List<string> columnTypes = new List<string>();
 
             int idCount = 2;
-            for (int i = 4; i < tokens.Count; ++i)
+            for (int i = 4; i < tokens.Count; ++i) // looping through '(' <ID List> ')'
             {
                 if (tokens[i] == ")")
                 {
-                    break;
+                    break; // looped through entire create statement
                 }
                 else if (tokens[i] == ",")
                 {
@@ -207,17 +208,17 @@ namespace DB338Core
 
             IntSchTable newTable = new IntSchTable(newTableName);
 
-            for (int i = 0; i < columnNames.Count; ++i)
+            for (int i = 0; i < columnNames.Count; ++i) // creating our table
             {
                 newTable.AddColumn(columnNames[i], columnTypes[i]);
             }
 
-            tables.Add(newTable);
+            tables.Add(newTable); // table has been created
 
-            return true;
+            return true; 
         }
 
-        private string[,] ProcessUpdateStatement(List<string> tokens)
+        private string[,] ProcessUpdateStatement(List<string> tokens) // tokens represents the SQL code for the command to be run
         {
             throw new NotImplementedException();
         }
