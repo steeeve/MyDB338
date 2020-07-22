@@ -221,6 +221,58 @@ namespace DB338Core
         private string[,] ProcessUpdateStatement(List<string> tokens) // tokens represents the SQL code for the command to be run
         {
             throw new NotImplementedException();
+            // <Update Stm> ::= UPDATE <Tablename> SET '(' <<col> = <val>, ... >) WHERE '(' <<col> = <val>, ... >) 
+
+
+            string updateTableName = tokens[1]; // table to update
+
+            foreach (IntSchTable tbl in tables)
+            {
+                if (tbl.Name == updateTableName) // found table to update
+                {
+                    List<string> columnNames = new List<string>(); // using tuples here?
+                    List<string> columnValues = new List<string>(); 
+
+                    int offset = 0;
+
+                    for (int i = 4; i < tokens.Count; ++i) // loops through {SET} <<col> = <val>, ...>
+                    {
+                        if (tokens[i] == ")")    // conditions will be different to add to columnNames
+                        {
+                            offset = i + 3;
+                            break;
+                        }
+                        else if (tokens[i] == ",")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            columnNames.Add(tokens[i]);
+                        }
+                    }
+
+                    for (int i = offset; i < tokens.Count; ++i) // loops through {WHERE} <<col> = <val>, ...> 
+                    {
+                        if (tokens[i] == ")")   // conditions will be different to add to columnValues
+                        {
+                            break;  // looped through entire insert statement
+                        }
+                        else if (tokens[i] == ",")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            columnValues.Add(tokens[i]);
+                        }
+                    }
+
+
+                    // by now we have columnNames and columnValues
+                    // Check for validity and perform our update
+                }
+            }
         }
 
         private string[,] ProcessDropStatement(List<string> tokens)
