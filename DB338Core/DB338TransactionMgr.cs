@@ -230,8 +230,11 @@ namespace DB338Core
             {
                 if (tbl.Name == updateTableName) // found table to update
                 {
-                    List<string> columnNames = new List<string>(); // using tuples here?
-                    List<string> columnValues = new List<string>(); 
+                    List<string> columnNames = new List<string>();
+                    List<string> columnValues = new List<string>();
+
+                    List<string> toColumnNames = new List<string>();
+                    List<string> toColumnValues = new List<string>();
 
                     int offset = 0;
 
@@ -245,6 +248,11 @@ namespace DB338Core
                         else if (tokens[i] == ",")
                         {
                             continue;
+                        }
+                        else if (tokens[i] == "=")
+                        {
+                            i++;
+                            columnValues.Add(tokens[i + 1]);
                         }
                         else
                         {
@@ -262,14 +270,20 @@ namespace DB338Core
                         {
                             continue;
                         }
+                        else if (tokens[i] == "=")
+                        {
+                            i++;
+                            toColumnValues.Add(tokens[i + 1]);
+                        }
                         else
                         {
-                            columnValues.Add(tokens[i]);
+                            toColumnNames.Add(tokens[i]);
                         }
                     }
 
+                    // by now we have columnNames and columnValues as well as the columnnames and vals of
+                    //     where we would like to insert to
 
-                    // by now we have columnNames and columnValues
                     // Check for validity and perform our update
                 }
             }
