@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DB338Core
 {
@@ -65,7 +66,7 @@ namespace DB338Core
         {
             // <Select Stm> ::= SELECT <Columns> <From Clause> <Where Clause> <Group Clause> <Having Clause> <Order Clause>
 
-            List<string> colsToSelect = new List<string>(); // list of indices?
+            List<string> colsToSelect = new List<string>(); // list of names of cols
             int tableOffset = 0;
 
             for (int i = 1; i < tokens.Count; ++i)
@@ -221,7 +222,7 @@ namespace DB338Core
         private string[,] ProcessUpdateStatement(List<string> tokens) // tokens represents the SQL code for the command to be run
         {
             throw new NotImplementedException();
-            // <Update Stm> ::= UPDATE <Tablename> SET '(' <<col> = <val>, ... >) WHERE '(' <<col> = <val>, ... >) 
+            // <Update Stm> ::= UPDATE <Tablename> SET '(' <<col> = <val>, ... > ')' WHERE '(' <<col> = <val>, ... >) 
 
 
             string updateTableName = tokens[1]; // table to update
@@ -287,6 +288,8 @@ namespace DB338Core
                     //     where we would like to insert to
 
                     // Check for validity and perform our update
+                    // Check we are updating x columns with x pieces of data
+                    // delete the columns to be updated, insert at the same place? or just swap override vals?
                 }
             }
         }
@@ -299,6 +302,54 @@ namespace DB338Core
         private string[,] ProcessDeleteStatement(List<string> tokens)
         {
             throw new NotImplementedException();
+
+            string[,] results = new string[1, 1];
+            // Delete FROM <tbl_name> WHERE '(' col = val, .... ')'
+
+            string deleteTableName = tokens[2];
+
+            foreach (IntSchTable tbl in tables)
+            {
+                if (tbl.Name == deleteTableName)
+                {
+                    List<string> columnNames = new List<string>();
+                    List<string> columnValues = new List<string>();
+
+                    for (int i = 5; i < tokens.Count; ++i) // loops through  <<col> = <val>, ...>
+                    {
+                        if (tokens[i] == ")")
+                        {
+                            break;
+                        }
+                        else if (tokens[i] == ",")
+                        {
+                            continue;
+                        }
+                        else if (tokens[i] == "=")
+                        {
+                            i++;
+                            columnValues.Add(tokens[i + 1]);
+                        }
+
+                        else
+                        {
+                            columnNames.Add(tokens[i]);
+                        }
+                    }
+
+                    if (columnNames.Count != columnValues.Count)
+                    {
+                        return null; // delete failed
+                    }
+                    else
+                    {
+                        tbl.Remove(columnNames, columnValues);
+                        results = tables[i].Select(columnNames); // return the table we deleted from
+                        return results; // delete worked
+                    }
+                }
+            }
+            return null; //delete failed
         }
 
         private string[,] ProcessAlterStatement(List<string> tokens)

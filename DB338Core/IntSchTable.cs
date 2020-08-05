@@ -60,6 +60,20 @@ namespace DB338Core
             }
         }
 
+        public void Remove(List<string> cols, List<string> vals)
+        {
+            for (int i = 0; i < cols.Count; ++i)
+            {
+                for (int j = 0; j < columns.Count; ++j)
+                {
+                    if (columns[j].Get(i) == vals[i])
+                    {
+                        columns[j].items.Remove(vals[i]);
+                    }
+                }
+            }
+        }
+
         public bool AddColumn(string name, string type)
         {
             foreach (IntSchColumn col in columns)
