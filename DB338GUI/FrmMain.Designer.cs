@@ -46,7 +46,7 @@
             // 
             // BtnSubmitQuery
             // 
-            this.BtnSubmitQuery.Location = new System.Drawing.Point(690, 60);
+            this.BtnSubmitQuery.Location = new System.Drawing.Point(690, 31);
             this.BtnSubmitQuery.Name = "BtnSubmitQuery";
             this.BtnSubmitQuery.Size = new System.Drawing.Size(96, 29);
             this.BtnSubmitQuery.TabIndex = 2;
@@ -82,6 +82,8 @@
         private System.Windows.Forms.TextBox TxtQuery;
         private System.Windows.Forms.Button BtnSubmitQuery;
         private System.Windows.Forms.TextBox TxtResults;
+        private System.Windows.Forms.TextBox HelloWorld;
+        private System.Windows.Forms.Button HelloBtn;
     }
 }
 
