@@ -344,7 +344,7 @@ namespace DB338Core
                     else
                     {
                         tbl.Remove(columnNames, columnValues);
-                        results = tables[i].Select(columnNames); // return the table we deleted from
+                        results = tbl.Select(columnNames); // return the table we deleted from
                         return results; // delete worked
                     }
                 }

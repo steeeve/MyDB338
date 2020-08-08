@@ -32,7 +32,8 @@ namespace DB338GUI
                     //null means error
                     MessageBox.Show("Input SQL contained a " + queryResult.Error + " error.");
                 }
-                else {
+                else 
+                {
                     Output(queryResults);
                 }
             }
@@ -50,6 +51,26 @@ namespace DB338GUI
                 s += Environment.NewLine;
             }
             TxtResults.Text = s;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string q = "create table " + TableNameTxtBox.Text + TableColumnsTxtBox.Text;
+            QueryResult queryResult = db.SubmitQuery(q);
+            string[,] queryResults = queryResult.Results;
+            if (queryResult.Error != "none")
+            {
+                MessageBox.Show("Input SQL contained a " + queryResult.Error + " error.");
+            }
+            else
+            {
+                Output(queryResults);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string q = "insert into " + 
         }
     }
 }
