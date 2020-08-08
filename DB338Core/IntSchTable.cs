@@ -19,6 +19,15 @@ namespace DB338Core
 
         public string Name { get => name; set => name = value; }
 
+        public List<string> getAllColumns()
+        {
+            List<string> retlist = new List<string>();
+            for (int i = 0; i < columns.Count; i++)
+            {
+                retlist.Add(columns[i].Name);
+            }
+            return retlist;
+        }
 
         public string[,] Select(List<string> cols)
         {

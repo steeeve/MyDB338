@@ -73,12 +73,17 @@ namespace DB338Core
             {
                 if (tokens[i] == "from")
                 {
-                    tableOffset = i + 1; // next is the table to be selected?
+                    tableOffset = i + 1; // next is the table to be selected
                     break;
                 }
                 else if (tokens[i] == ",")
                 {
                     continue;
+                }
+                else if (tokens[i] == "*")
+                {
+                    tableOffset = 0;
+                    break;
                 }
                 else
                 {
@@ -86,17 +91,34 @@ namespace DB338Core
                 }
             }
 
-            string tableToSelectFrom = tokens[tableOffset]; // table we are selecting from
-
-            for (int i = 0; i < tables.Count; ++i)
+            if (tableOffset == 0)
             {
-                if (tables[i].Name == tableToSelectFrom) // found it
+                // we want to select ALL columns
+                for (int i = 0; i < tables.Count; ++i)
                 {
-                    return tables[i].Select(colsToSelect); // select worked
+                    if (tables[i].Name == tokens[3])
+                    {
+                        // this is the table to select from
+                        colsToSelect = tables[i].getAllColumns(); // selecting ALL columns
+                        return tables[i].Select(colsToSelect); // select worked
+                    }
                 }
-            }
+                return null; // select failed (couldnt find table to be selected)
+            }          
+            else
+            {
+                string tableToSelectFrom = tokens[tableOffset]; // table we are selecting from
 
-            return null; // select failed
+                for (int i = 0; i < tables.Count; ++i)
+                {
+                    if (tables[i].Name == tableToSelectFrom) // found it
+                    {
+                        return tables[i].Select(colsToSelect); // select worked
+                    }
+                }
+
+                return null; // select failed (couldnt find table to be selected)
+            }
         }
 
         private bool ProcessInsertStatement(List<string> tokens)
@@ -253,7 +275,7 @@ namespace DB338Core
                         else if (tokens[i] == "=")
                         {
                             i++;
-                            columnValues.Add(tokens[i + 1]);
+                            columnValues.Add(tokens[i]);
                         }
                         else
                         {
@@ -274,7 +296,7 @@ namespace DB338Core
                         else if (tokens[i] == "=")
                         {
                             i++;
-                            toColumnValues.Add(tokens[i + 1]);
+                            toColumnValues.Add(tokens[i]);
                         }
                         else
                         {
@@ -303,10 +325,9 @@ namespace DB338Core
         {
             throw new NotImplementedException();
 
-            string[,] results = new string[1, 1];
             // Delete FROM <tbl_name> WHERE '(' col = val, .... ')'
 
-            string deleteTableName = tokens[2];
+            string deleteTableName = tokens[2]; // table to delete from
 
             foreach (IntSchTable tbl in tables)
             {
@@ -328,28 +349,28 @@ namespace DB338Core
                         else if (tokens[i] == "=")
                         {
                             i++;
-                            columnValues.Add(tokens[i + 1]);
+                            columnValues.Add(tokens[i]); // adding value
                         }
 
                         else
                         {
-                            columnNames.Add(tokens[i]);
+                            columnNames.Add(tokens[i]);     // adding col
                         }
                     }
 
                     if (columnNames.Count != columnValues.Count)
                     {
-                        return null; // delete failed
+                        return null; // delete failed (bad syntax)
                     }
                     else
                     {
-                        tbl.Remove(columnNames, columnValues);
-                        results = tbl.Select(columnNames); // return the table we deleted from
-                        return results; // delete worked
+                        tbl.Remove(columnNames, columnValues); 
+                        return tbl.Select(columnNames); // return the table we deleted from
+                        // delete worked
                     }
                 }
             }
-            return null; //delete failed
+            return null; //delete failed (could not find table we were looking for)
         }
 
         private string[,] ProcessAlterStatement(List<string> tokens)

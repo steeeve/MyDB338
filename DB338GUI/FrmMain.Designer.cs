@@ -51,21 +51,29 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.selectTableName = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.selectColNames = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.button3 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // TxtQuery
             // 
             this.TxtQuery.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtQuery.Location = new System.Drawing.Point(12, 12);
+            this.TxtQuery.Location = new System.Drawing.Point(364, 237);
             this.TxtQuery.Multiline = true;
             this.TxtQuery.Name = "TxtQuery";
-            this.TxtQuery.Size = new System.Drawing.Size(351, 151);
+            this.TxtQuery.Size = new System.Drawing.Size(369, 203);
             this.TxtQuery.TabIndex = 1;
             this.TxtQuery.Text = resources.GetString("TxtQuery.Text");
             // 
             // BtnSubmitQuery
             // 
-            this.BtnSubmitQuery.Location = new System.Drawing.Point(228, 169);
+            this.BtnSubmitQuery.Location = new System.Drawing.Point(739, 370);
             this.BtnSubmitQuery.Name = "BtnSubmitQuery";
             this.BtnSubmitQuery.Size = new System.Drawing.Size(96, 29);
             this.BtnSubmitQuery.TabIndex = 2;
@@ -76,10 +84,10 @@
             // TxtResults
             // 
             this.TxtResults.Font = new System.Drawing.Font("Courier New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.TxtResults.Location = new System.Drawing.Point(12, 169);
+            this.TxtResults.Location = new System.Drawing.Point(12, 237);
             this.TxtResults.Multiline = true;
             this.TxtResults.Name = "TxtResults";
-            this.TxtResults.Size = new System.Drawing.Size(210, 219);
+            this.TxtResults.Size = new System.Drawing.Size(346, 203);
             this.TxtResults.TabIndex = 3;
             // 
             // button1
@@ -113,7 +121,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(627, 107);
+            this.label3.Location = new System.Drawing.Point(628, 96);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 7;
@@ -128,7 +136,7 @@
             // 
             // TableColumnsTxtBox
             // 
-            this.TableColumnsTxtBox.Location = new System.Drawing.Point(694, 100);
+            this.TableColumnsTxtBox.Location = new System.Drawing.Point(694, 93);
             this.TableColumnsTxtBox.Name = "TableColumnsTxtBox";
             this.TableColumnsTxtBox.Size = new System.Drawing.Size(100, 20);
             this.TableColumnsTxtBox.TabIndex = 9;
@@ -136,7 +144,7 @@
             // ColDescription
             // 
             this.ColDescription.AutoSize = true;
-            this.ColDescription.Location = new System.Drawing.Point(627, 124);
+            this.ColDescription.Location = new System.Drawing.Point(672, 116);
             this.ColDescription.Name = "ColDescription";
             this.ColDescription.Size = new System.Drawing.Size(163, 13);
             this.ColDescription.TabIndex = 10;
@@ -145,7 +153,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(691, 64);
+            this.label4.Location = new System.Drawing.Point(672, 64);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 13);
             this.label4.TabIndex = 11;
@@ -211,7 +219,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(466, 68);
+            this.label9.Location = new System.Drawing.Point(456, 68);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(94, 13);
             this.label9.TabIndex = 19;
@@ -220,7 +228,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(469, 119);
+            this.label10.Location = new System.Drawing.Point(456, 116);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(105, 13);
             this.label10.TabIndex = 20;
@@ -245,11 +253,88 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(131, 18);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(71, 13);
+            this.label12.TabIndex = 23;
+            this.label12.Text = "Select entries";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(131, 48);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(103, 13);
+            this.label13.TabIndex = 24;
+            this.label13.Text = "Table to select from:";
+            // 
+            // selectTableName
+            // 
+            this.selectTableName.Location = new System.Drawing.Point(240, 45);
+            this.selectTableName.Name = "selectTableName";
+            this.selectTableName.Size = new System.Drawing.Size(100, 20);
+            this.selectTableName.TabIndex = 25;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(134, 95);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(93, 13);
+            this.label14.TabIndex = 26;
+            this.label14.Text = "Columns to select:";
+            // 
+            // selectColNames
+            // 
+            this.selectColNames.Location = new System.Drawing.Point(240, 93);
+            this.selectColNames.Name = "selectColNames";
+            this.selectColNames.Size = new System.Drawing.Size(100, 20);
+            this.selectColNames.TabIndex = 27;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(225, 68);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(94, 13);
+            this.label15.TabIndex = 28;
+            this.label15.Text = "Example: MyTable";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(228, 116);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(125, 13);
+            this.label16.TabIndex = 29;
+            this.label16.Text = "Example: col1, col2, col3";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(137, 140);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 30;
+            this.button3.Text = "Select";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(933, 452);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.selectColNames);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.selectTableName);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.label12);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
@@ -302,6 +387,14 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox selectTableName;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox selectColNames;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button3;
     }
 }
 

@@ -55,6 +55,7 @@ namespace DB338GUI
 
         private void button1_Click(object sender, EventArgs e)
         {
+            // Create table
             string q = "create table " + TableNameTxtBox.Text + TableColumnsTxtBox.Text;
             QueryResult queryResult = db.SubmitQuery(q);
             string[,] queryResults = queryResult.Results;
@@ -70,7 +71,34 @@ namespace DB338GUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string q = "insert into " + 
+            // Insert into
+            string q = "insert into " + insertTableText.Text + insertColText.Text + " values" + insertValText.Text;
+            QueryResult queryResult = db.SubmitQuery(q);
+            string[,] queryResults = queryResult.Results;
+            if (queryResult.Error != "none")
+            {
+                MessageBox.Show("Input SQL contained a " + queryResult.Error + " error.");
+            }
+            else
+            {
+                Output(queryResults);
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            // select
+            string q = "select " + selectColNames.Text + " from " + selectTableName.Text;
+            QueryResult queryResult = db.SubmitQuery(q);
+            string[,] queryResults = queryResult.Results;
+            if (queryResult.Error != "none")
+            {
+                MessageBox.Show("Input SQL contained a " + queryResult.Error + " error.");
+            }
+            else
+            {
+                Output(queryResults);
+            }
         }
     }
 }
