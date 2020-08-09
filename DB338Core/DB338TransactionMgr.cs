@@ -41,7 +41,7 @@ namespace DB338Core
             }
             else if (type == "delete")
             {
-                results = ProcessDeleteStatement(tokens); // will implement
+                success = ProcessDeleteStatement(tokens); // implementing
             }
             else if (type == "drop")
             {
@@ -49,7 +49,7 @@ namespace DB338Core
             }
             else if (type == "update")
             {
-                results = ProcessUpdateStatement(tokens); // will implement
+                results = ProcessUpdateStatement(tokens); // implementing
             }
             else
             {
@@ -321,10 +321,8 @@ namespace DB338Core
             throw new NotImplementedException();
         }
 
-        private string[,] ProcessDeleteStatement(List<string> tokens)
+        private bool ProcessDeleteStatement(List<string> tokens)
         {
-            throw new NotImplementedException();
-
             // Delete FROM <tbl_name> WHERE '(' col = val, .... ')'
 
             string deleteTableName = tokens[2]; // table to delete from
@@ -351,7 +349,6 @@ namespace DB338Core
                             i++;
                             columnValues.Add(tokens[i]); // adding value
                         }
-
                         else
                         {
                             columnNames.Add(tokens[i]);     // adding col
@@ -360,17 +357,17 @@ namespace DB338Core
 
                     if (columnNames.Count != columnValues.Count)
                     {
-                        return null; // delete failed (bad syntax)
+                        return false; // delete failed (bad syntax)
                     }
                     else
                     {
                         tbl.Remove(columnNames, columnValues); 
-                        return tbl.Select(columnNames); // return the table we deleted from
+                        return true; // return the table we deleted from
                         // delete worked
                     }
                 }
             }
-            return null; //delete failed (could not find table we were looking for)
+            return false; //delete failed (could not find table we were looking for)
         }
 
         private string[,] ProcessAlterStatement(List<string> tokens)
