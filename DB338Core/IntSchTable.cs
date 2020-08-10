@@ -78,6 +78,7 @@ namespace DB338Core
                     if (j == row) // found the index to be deleted
                     {
                         columns[i].items.RemoveAt(j);
+                        break; // go to the next column
                     }
                 }
             }
@@ -88,6 +89,9 @@ namespace DB338Core
             // go thru all the rows of our table, go thru all the cols/vals, if the current row has it
             // where column[j].Name == cols[c] and columns[j].items[i] == vals[c], for all c, then call
             // DeleteRow on that row i
+
+            // Does not remove when cols is the first and only column specified!!!! wtf?!
+
             int satisfies = 0; // counter for how many conditions we satisfie
             for (int i = 0; i < columns[0].items.Count; ++i)
             { // looping thru rows of our table
@@ -101,7 +105,8 @@ namespace DB338Core
                         }
                         else
                         {
-                            break; // violated our requirement
+                            satisfies = 0;
+                            break; // violated our requirement, move onto next row
                         }
                     }
                     else
@@ -109,10 +114,12 @@ namespace DB338Core
                         continue;
                     }
 
-                    if (j == columns.Count - 1 && satisfies == cols.Count) //delete the row, when we
+                    if (j == columns.Count - 1 && satisfies == cols.Count) //delete the row, here we
                     // are on the last column of the row and have satisfied all the conditions
                     {
+                        satisfies = 0;
                         DeleteRow(i);
+                        break; // deleted this row, mvoe onto next row
                     }
                 }
             }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.TxtQuery = new System.Windows.Forms.TextBox();
             this.BtnSubmitQuery = new System.Windows.Forms.Button();
             this.TxtResults = new System.Windows.Forms.TextBox();
@@ -69,7 +68,6 @@
             this.TxtQuery.Name = "TxtQuery";
             this.TxtQuery.Size = new System.Drawing.Size(369, 203);
             this.TxtQuery.TabIndex = 1;
-            this.TxtQuery.Text = resources.GetString("TxtQuery.Text");
             // 
             // BtnSubmitQuery
             // 
@@ -133,7 +131,7 @@
             this.TableNameTxtBox.Name = "TableNameTxtBox";
             this.TableNameTxtBox.Size = new System.Drawing.Size(100, 20);
             this.TableNameTxtBox.TabIndex = 8;
-            this.TableNameTxtBox.Text = "MyTable";
+            this.TableNameTxtBox.Text = "Workout1";
             // 
             // TableColumnsTxtBox
             // 
@@ -141,15 +139,16 @@
             this.TableColumnsTxtBox.Name = "TableColumnsTxtBox";
             this.TableColumnsTxtBox.Size = new System.Drawing.Size(100, 20);
             this.TableColumnsTxtBox.TabIndex = 9;
+            this.TableColumnsTxtBox.Text = "reps int, excer string";
             // 
             // ColDescription
             // 
             this.ColDescription.AutoSize = true;
             this.ColDescription.Location = new System.Drawing.Point(672, 116);
             this.ColDescription.Name = "ColDescription";
-            this.ColDescription.Size = new System.Drawing.Size(163, 13);
+            this.ColDescription.Size = new System.Drawing.Size(157, 13);
             this.ColDescription.TabIndex = 10;
-            this.ColDescription.Text = "Example: (col1 type1, col2 type2)";
+            this.ColDescription.Text = "Example: col1 type1, col2 type2";
             // 
             // label4
             // 
@@ -166,6 +165,7 @@
             this.insertTableText.Name = "insertTableText";
             this.insertTableText.Size = new System.Drawing.Size(100, 20);
             this.insertTableText.TabIndex = 12;
+            this.insertTableText.Text = "Workout1";
             // 
             // insertColText
             // 
@@ -173,6 +173,7 @@
             this.insertColText.Name = "insertColText";
             this.insertColText.Size = new System.Drawing.Size(100, 20);
             this.insertColText.TabIndex = 13;
+            this.insertColText.Text = "reps, excer";
             // 
             // insertValText
             // 
@@ -180,6 +181,7 @@
             this.insertValText.Name = "insertValText";
             this.insertValText.Size = new System.Drawing.Size(100, 20);
             this.insertValText.TabIndex = 14;
+            this.insertValText.Text = "1, Bicep_Curls";
             // 
             // label5
             // 
@@ -231,18 +233,18 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(456, 116);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(105, 13);
+            this.label10.Size = new System.Drawing.Size(99, 13);
             this.label10.TabIndex = 20;
-            this.label10.Text = "Example: (col1, col2)";
+            this.label10.Text = "Example: col1, col2";
             // 
             // label11
             // 
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(472, 165);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(155, 13);
+            this.label11.Size = new System.Drawing.Size(149, 13);
             this.label11.TabIndex = 21;
-            this.label11.Text = "Example: (\"fruit\", \"vegaetable\")";
+            this.label11.Text = "Example: \"fruit\", \"vegaetable\"";
             // 
             // button2
             // 
@@ -278,6 +280,7 @@
             this.selectTableName.Name = "selectTableName";
             this.selectTableName.Size = new System.Drawing.Size(100, 20);
             this.selectTableName.TabIndex = 25;
+            this.selectTableName.Text = "Workout1";
             // 
             // label14
             // 
@@ -294,6 +297,7 @@
             this.selectColNames.Name = "selectColNames";
             this.selectColNames.Size = new System.Drawing.Size(100, 20);
             this.selectColNames.TabIndex = 27;
+            this.selectColNames.Text = "*";
             // 
             // label15
             // 
