@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Text;
 
 namespace DB338Core
@@ -25,6 +27,16 @@ namespace DB338Core
             for (int i = 0; i < columns.Count; i++)
             {
                 retlist.Add(columns[i].Name);
+            }
+            return retlist;
+        }
+
+        public List<string> getRowVals(int row)
+        {
+            List<string> retlist = new List<string>();
+            for (int i = 0; i < columns.Count; ++i)
+            {
+                retlist.Add(columns[i].items[row])
             }
             return retlist;
         }
@@ -97,13 +109,13 @@ namespace DB338Core
             { // looping thru rows of our table
                 for (int j = 0; j < columns.Count; ++j)
                 {// going thru ith row of each column
-                    if (cols.Contains(columns[j].Name))
+                    if (cols.Contains(columns[j].Name)) // name is in cols, should we remove this???
                     {
-                        if (vals.Contains(columns[j].items[i]))
+                        if (vals.Contains(columns[j].items[i])) // value of same column is in vals!!!
                         {
                             satisfies++;
                         }
-                        else
+                        else // its value does not belong in vals...
                         {
                             satisfies = 0;
                             break; // violated our requirement, move onto next row
@@ -125,7 +137,60 @@ namespace DB338Core
             }
         }
 
+        public void UpdateRow(List<string> cols, List<string> vals, int row)
+        {
+            for (int i = 0; i < columns.Count; ++i) // looping thru the columns of our table
+            {
+                for (int c = 0; c < cols.Count; ++c) // checking which index our column is
+                {
+                    if (cols[c] == columns[i].Name) // this column is in our cols list
+                    {
+                        columns[i].items[row] = vals[c]; // updating value
+                        break; // move on to next column
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
 
+        public void Update(List<string> cols, List<string> vals, List<string> toCols, List<string> toVals)
+        {
+            int satisfies = 0; // counter for how many conditions we satisfie
+            for (int i = 0; i < columns[0].items.Count; ++i)
+            { // looping thru rows of our table
+                for (int j = 0; j < columns.Count; ++j)
+                {// going thru ith row of each column
+                    if (toCols.Contains(columns[j].Name))
+                    {
+                        if (toVals.Contains(columns[j].items[i]))
+                        {
+                            satisfies++;
+                        }
+                        else
+                        {
+                            satisfies = 0;
+                            break; // violated our requirement, move onto next row
+                        }
+                    }
+                    else
+                    {
+                        continue;
+                    }
+
+                    if (j == columns.Count - 1 && satisfies == toCols.Count) // here we
+                    // are on the last column of the row and have satisfied all the conditions
+                    {
+                        satisfies = 0;
+                        // update the row we are on (i) with cols and vals
+                        UpdateRow(cols, vals, i);
+                        break; // updated this row, move onto next row
+                    }
+                }
+            }
+        }
         
         public bool AddColumn(string name, string type)
         {

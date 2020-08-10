@@ -49,7 +49,7 @@ namespace DB338Core
             }
             else if (type == "update")
             {
-                results = ProcessUpdateStatement(tokens); // implementing
+                success = ProcessUpdateStatement(tokens); // implementing
             }
             else
             {
@@ -241,11 +241,9 @@ namespace DB338Core
             return true; 
         }
 
-        private string[,] ProcessUpdateStatement(List<string> tokens) // tokens represents the SQL code for the command to be run
+        private bool ProcessUpdateStatement(List<string> tokens) // tokens represents the SQL code for the command to be run
         {
-            throw new NotImplementedException();
             // <Update Stm> ::= UPDATE <Tablename> SET '(' <<col> = <val>, ... > ')' WHERE '(' <<col> = <val>, ... >) 
-
 
             string updateTableName = tokens[1]; // table to update
 
@@ -310,10 +308,20 @@ namespace DB338Core
                     //     where we would like to insert to
 
                     // Check for validity and perform our update
-                    // Check we are updating x columns with x pieces of data
-                    // delete the columns to be updated, insert at the same place? or just swap override vals?
+                    if ((columnNames.Count == columnValues.Count) && 
+                        (toColumnNames.Count == toColumnValues.Count))
+                    {
+                        // valid:
+                        tbl.Update(columnNames, columnValues, toColumnNames, toColumnValues);
+                        return true;
+                    }
+                    else
+                    {
+                        return false; // invalid input
+                    }
                 }
             }
+            return false; // could not find table to be updated
         }
 
         private string[,] ProcessDropStatement(List<string> tokens)
