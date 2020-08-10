@@ -196,7 +196,7 @@ namespace DB338Core
                 if (tbl.Name == newTableName)
                 {
                     //cannot create a new table with the same name
-                    return false; // only time create will not work
+                    return false; // this is the only time create will not work
                 }
             }
 

@@ -71,7 +71,7 @@ namespace DB338Core
 
         public void DeleteRow(int row)
         {
-            for (int i = 0; i < columns.Count; ++i) // loops thru all cols
+            for (int i = 0; i < columns.Count; ++i) // loops thru all cols in our table
             {
                 for (int j = 0; j < columns[i].items.Count; ++j) // looping thru the contents of the column
                 {
@@ -93,7 +93,7 @@ namespace DB338Core
             { // looping thru rows of our table
                 for (int j = 0; j < columns.Count; ++j)
                 {// going thru ith row of each column
-                    if (cols.Contains(columns[j].Name)
+                    if (cols.Contains(columns[j].Name))
                     {
                         if (vals.Contains(columns[j].items[i]))
                         {
@@ -109,7 +109,7 @@ namespace DB338Core
                         continue;
                     }
 
-                    if (j == columns.Count - 1 && satisfies == cols.Count) //delete the row when we
+                    if (j == columns.Count - 1 && satisfies == cols.Count) //delete the row, when we
                     // are on the last column of the row and have satisfied all the conditions
                     {
                         DeleteRow(i);
@@ -122,15 +122,15 @@ namespace DB338Core
         
         public bool AddColumn(string name, string type)
         {
-            foreach (IntSchColumn col in columns)
+            foreach (IntSchColumn col in columns) // adding a new column to our table, needs to be a diff name
             {
                 if (col.Name == name)
                 {
-                    return false;
+                    return false; // name already taken, addcolumn fails
                 }
             }
-
-            columns.Add(new IntSchColumn(name, type));
+            // name not taken if we get here
+            columns.Add(new IntSchColumn(name, type)); // type specified here
             return true;
         }
     }

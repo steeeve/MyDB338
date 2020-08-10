@@ -133,6 +133,7 @@
             this.TableNameTxtBox.Name = "TableNameTxtBox";
             this.TableNameTxtBox.Size = new System.Drawing.Size(100, 20);
             this.TableNameTxtBox.TabIndex = 8;
+            this.TableNameTxtBox.Text = "MyTable";
             // 
             // TableColumnsTxtBox
             // 
