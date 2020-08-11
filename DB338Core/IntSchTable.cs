@@ -36,7 +36,7 @@ namespace DB338Core
             List<string> retlist = new List<string>();
             for (int i = 0; i < columns.Count; ++i)
             {
-                retlist.Add(columns[i].items[row])
+                retlist.Add(columns[i].items[row]);
             }
             return retlist;
         }
@@ -102,9 +102,9 @@ namespace DB338Core
             // where column[j].Name == cols[c] and columns[j].items[i] == vals[c], for all c, then call
             // DeleteRow on that row i
 
-            // Does not remove when cols is the first and only column specified!!!! wtf?!
+            // Does not work when more than one condition is specified...
 
-            int satisfies = 0; // counter for how many conditions we satisfie
+            int satisfies = 0; // counter for how many conditions we satisfy
             for (int i = 0; i < columns[0].items.Count; ++i)
             { // looping thru rows of our table
                 for (int j = 0; j < columns.Count; ++j)
@@ -113,7 +113,7 @@ namespace DB338Core
                     {
                         if (vals.Contains(columns[j].items[i])) // value of same column is in vals!!!
                         {
-                            satisfies++;
+                            satisfies++; // we satisfie a requirement
                         }
                         else // its value does not belong in vals...
                         {
@@ -121,17 +121,13 @@ namespace DB338Core
                             break; // violated our requirement, move onto next row
                         }
                     }
-                    else
-                    {
-                        continue;
-                    }
 
                     if (j == columns.Count - 1 && satisfies == cols.Count) //delete the row, here we
                     // are on the last column of the row and have satisfied all the conditions
                     {
                         satisfies = 0;
                         DeleteRow(i);
-                        break; // deleted this row, mvoe onto next row
+                        break; // deleted this row, move onto next row
                     }
                 }
             }
@@ -145,12 +141,11 @@ namespace DB338Core
                 {
                     if (cols[c] == columns[i].Name) // this column is in our cols list
                     {
-                        columns[i].items[row] = vals[c]; // updating value
+                        //columns[i].items[row] = vals[c]; // updating value
+                        // does not update, try
+                        columns[i].items.RemoveAt(row);
+                        columns[i].items.Insert(row, vals[c]);
                         break; // move on to next column
-                    }
-                    else
-                    {
-                        continue;
                     }
                 }
             }
@@ -174,10 +169,6 @@ namespace DB338Core
                             satisfies = 0;
                             break; // violated our requirement, move onto next row
                         }
-                    }
-                    else
-                    {
-                        continue;
                     }
 
                     if (j == columns.Count - 1 && satisfies == toCols.Count) // here we

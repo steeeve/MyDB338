@@ -243,8 +243,8 @@ namespace DB338Core
 
         private bool ProcessUpdateStatement(List<string> tokens) // tokens represents the SQL code for the command to be run
         {
-            // <Update Stm> ::= UPDATE <Tablename> SET '(' <<col> = <val>, ... > ')' WHERE '(' <<col> = <val>, ... >) 
-
+            // <Update Stm> ::= UPDATE <Tablename> SET <<col> = <val>, ... > WHERE <<col> = <val> and ... >
+            // no support for OR after WHERE
             string updateTableName = tokens[1]; // table to update
 
             foreach (IntSchTable tbl in tables)
@@ -259,14 +259,14 @@ namespace DB338Core
 
                     int offset = 0;
 
-                    for (int i = 4; i < tokens.Count; ++i) // loops through {SET} <<col> = <val>, ...>
+                    for (int i = 3; i < tokens.Count; ++i) // loops through {SET} <<col> = <val>, ...>
                     {
-                        if (tokens[i] == ")")    // conditions will be different to add to columnNames
+                        if (tokens[i] == "WHERE")    
                         {
-                            offset = i + 3;
+                            offset = i + 1;
                             break;
                         }
-                        else if (tokens[i] == ",")
+                        else if (tokens[i] == "and")
                         {
                             continue;
                         }
@@ -281,13 +281,9 @@ namespace DB338Core
                         }
                     }
 
-                    for (int i = offset; i < tokens.Count; ++i) // loops through {WHERE} <<col> = <val>, ...> 
+                    for (int i = offset; i < tokens.Count; ++i) // loops through <<col> = <val> and ...> 
                     {
-                        if (tokens[i] == ")")   // conditions will be different to add to columnValues
-                        {
-                            break;  // looped through entire insert statement
-                        }
-                        else if (tokens[i] == ",")
+                        if (tokens[i] == "and")
                         {
                             continue;
                         }
@@ -331,7 +327,7 @@ namespace DB338Core
 
         private bool ProcessDeleteStatement(List<string> tokens)
         {
-            // Delete FROM <tbl_name> WHERE '(' col = val, .... ')'
+            // Delete FROM <tbl_name> WHERE col = val, ....
 
             string deleteTableName = tokens[2]; // table to delete from
 
@@ -342,13 +338,9 @@ namespace DB338Core
                     List<string> columnNames = new List<string>();
                     List<string> columnValues = new List<string>();
 
-                    for (int i = 5; i < tokens.Count; ++i) // loops through  <<col> = <val>, ...>
+                    for (int i = 4; i < tokens.Count; ++i) // loops through  <<col> = <val>, ...>
                     {
-                        if (tokens[i] == ")")
-                        {
-                            break;
-                        }
-                        else if (tokens[i] == ",")
+                        if (tokens[i] == ",")
                         {
                             continue;
                         }

@@ -30,7 +30,7 @@ namespace DB338GUI
                 if (queryResult.Error != "none")
                 {
                     //null means error
-                    MessageBox.Show("Input SQL contained a " + queryResult.Error + " error.");
+                    MessageBox.Show("Input SQL contained a " + queryResult.Error + " error." + TxtQuery.Lines[i]);
                 }
                 else 
                 {
@@ -89,6 +89,21 @@ namespace DB338GUI
         {
             // select
             string q = "select " + selectColNames.Text + " from " + selectTableName.Text;
+            QueryResult queryResult = db.SubmitQuery(q);
+            string[,] queryResults = queryResult.Results;
+            if (queryResult.Error != "none")
+            {
+                MessageBox.Show("Input SQL contained a " + queryResult.Error + " error.");
+            }
+            else
+            {
+                Output(queryResults);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            string q = "delete from " + deleteTable.Text + " where " + deleteCond.Text;
             QueryResult queryResult = db.SubmitQuery(q);
             string[,] queryResults = queryResult.Results;
             if (queryResult.Error != "none")
