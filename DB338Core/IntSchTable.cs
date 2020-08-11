@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Text;
+using System.Windows.Forms;
 
 namespace DB338Core
 {
@@ -59,6 +61,42 @@ namespace DB338Core
                 }
             }
 
+            return results;
+        }
+
+        public string[,] SelectWhere(List<string> cols, List<string> colcond, List<string> valcond)
+        {
+            string[,] results = new string[columns[0].items.Count, cols.Count];
+            int satisfies = 0;
+
+            for (int i = 0; i < columns[0].items.Count; ++i) // looping thru rows (i)
+            {
+                for (int j = 0; j < columns.Count; ++j) // looping thru columns (j)
+                {
+                    if (colcond.Contains(columns[j].Name)) // this col has a condition to be checked
+                    {
+                        if (valcond.Contains(columns[j].items[i])) // satisfies condition
+                        {
+                            //keep checking the rest of the conds
+                            satisfies += 1;
+                        }
+                        else // does not satisfy condition, move on to next row
+                        {
+                            satisfies = 0;
+                            break;
+                        }
+                    }
+
+                    if (j == columns.Count - 1 && satisfies == colcond.Count)
+                    { // we satisfied the requirements, add this row to results
+                        satisfies = 0;
+                        for (int c = 0; c < columns.Count; ++c) // adding the entire row i to results
+                        {
+                            results[i, c] = columns[c].items[i];
+                        }
+                    }
+                }
+            }
             return results;
         }
 

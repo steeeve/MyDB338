@@ -64,7 +64,7 @@ namespace DB338Core
 
         private string[,] ProcessSelectStatement(List<string> tokens)
         {
-            // <Select Stm> ::= SELECT <Columns> <From Clause> <Where Clause> <Group Clause> <Having Clause> <Order Clause>
+            // <Select Stm> ::= SELECT <Columns> From <table> Where <cond>               <Group Clause> <Having Clause> <Order Clause>
 
             List<string> colsToSelect = new List<string>(); // list of names of cols
             int tableOffset = 0;
@@ -91,33 +91,91 @@ namespace DB338Core
                 }
             }
 
-            if (tableOffset == 0)
+            // check if where is in tokens
+            if (tokens.Contains("where"))
             {
-                // we want to select ALL columns
-                for (int i = 0; i < tables.Count; ++i)
+                // there is a where clause, 
+                List<string> colCond = new List<string>();
+                List<string> valCond = new List<string>();
+
+                for (int i = tableOffset + 2; i < tokens.Count; ++i)
                 {
-                    if (tables[i].Name == tokens[3])
+                    if (tokens[i] == "and")
                     {
-                        // this is the table to select from
-                        colsToSelect = tables[i].getAllColumns(); // selecting ALL columns
-                        return tables[i].Select(colsToSelect); // select worked
+                        continue;
+                    }
+                    else if (tokens[i] == "=")
+                    {
+                        ++i;
+                        valCond.Add(tokens[i]);
+                    }
+                    else
+                    {
+                        colCond.Add(tokens[i]);
                     }
                 }
-                return null; // select failed (couldnt find table to be selected)
-            }          
+                // we now have our conditions to select from
+
+                if (tableOffset == 0) // select *
+                {
+                    // we want to select ALL columns
+                    for (int i = 0; i < tables.Count; ++i)
+                    {
+                        if (tables[i].Name == tokens[3]) // since here we have select * from <table>
+                        {
+                            // this is the table to select from
+                            colsToSelect = tables[i].getAllColumns(); // selecting ALL columns
+                            return tables[i].SelectWhere(colsToSelect, colCond, valCond); // select worked
+                        }
+                    }
+                    return null; // select failed (couldnt find table to be selected)
+                }
+                else // select col1, col2, ..
+                {
+                    string tableToSelectFrom = tokens[tableOffset]; // table we are selecting from
+
+                    for (int i = 0; i < tables.Count; ++i)
+                    {
+                        if (tables[i].Name == tableToSelectFrom) // found it
+                        {
+                            return tables[i].SelectWhere(colsToSelect, colCond, valCond); // select worked
+                        }
+                    }
+
+                    return null; // select failed (couldnt find table to be selected)
+                }
+
+            }
             else
             {
-                string tableToSelectFrom = tokens[tableOffset]; // table we are selecting from
-
-                for (int i = 0; i < tables.Count; ++i)
+                if (tableOffset == 0)
                 {
-                    if (tables[i].Name == tableToSelectFrom) // found it
+                    // we want to select ALL columns
+                    for (int i = 0; i < tables.Count; ++i)
                     {
-                        return tables[i].Select(colsToSelect); // select worked
+                        if (tables[i].Name == tokens[3]) // since here we have select * from <table>
+                        {
+                            // this is the table to select from
+                            colsToSelect = tables[i].getAllColumns(); // selecting ALL columns
+                            return tables[i].Select(colsToSelect); // select worked
+                        }
                     }
+                    return null; // select failed (couldnt find table to be selected)
                 }
+                else
+                {
+                    string tableToSelectFrom = tokens[tableOffset]; // table we are selecting from
 
-                return null; // select failed (couldnt find table to be selected)
+                    for (int i = 0; i < tables.Count; ++i)
+                    {
+                        if (tables[i].Name == tableToSelectFrom) // found it
+                        {
+                            return tables[i].Select(colsToSelect); // select worked
+                        }
+                    }
+
+                    return null; // select failed (couldnt find table to be selected)
+                }
             }
         }
 
