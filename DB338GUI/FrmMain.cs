@@ -100,6 +100,7 @@ namespace DB338GUI
 
         private void button5_Click(object sender, EventArgs e)
         {
+            // update button
             string q = "update " + updateTableName.Text + " set " + updateSetToValues.Text + " where " + updateCond.Text;
             QueryResult queryResult = db.SubmitQuery(q);
             string[,] queryResults = queryResult.Results;
@@ -111,6 +112,18 @@ namespace DB338GUI
             {
                 Output(queryResults);
             }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            // save button clicked
+            db.savestate();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            // load button clicked
+            db.loadstate();
         }
     }
 }

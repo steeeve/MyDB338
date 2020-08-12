@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace DB338Core
 {
+    [Serializable]
     class DB338TransactionMgr
     {
         //the List of Internal Schema Tables holds the actual data for DB338
@@ -434,6 +437,39 @@ namespace DB338Core
         private string[,] ProcessAlterStatement(List<string> tokens)
         {
             throw new NotImplementedException();
+        }
+    }
+
+
+    class DataSerializer
+    {
+        public void BinarySerialize(object data, string path)
+        {
+            FileStream fstream;
+            BinaryFormatter bf = new BinaryFormatter();
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            fstream = File.Create(path);
+            bf.Serialize(fstream, data);
+            fstream.Close();
+        }
+
+        public object BinaryDeserialize(string path)
+        {
+            object o = null;
+
+            FileStream fstream;
+            BinaryFormatter bf = new BinaryFormatter();
+            if (File.Exists(path))
+            {
+                fstream = File.OpenRead(path);
+                o = bf.Deserialize(fstream);
+                fstream.Close();
+            }
+
+            return o;
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Text;
 
 namespace DB338Core
 {
+    [Serializable]
     class IntSchColumn
     {
         public List<string> items;

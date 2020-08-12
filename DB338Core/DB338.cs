@@ -17,6 +17,20 @@ namespace DB338Core
             sqlParser = new SQLParser();
             sqlParser.Setup();
             transactionMgr = new DB338TransactionMgr();
+            //DataSerializer dataSerializer = new DataSerializer();
+            //transactionMgr = dataSerializer.BinaryDeserialize("data.save") as DB338TransactionMgr;
+        }
+
+        public void loadstate()
+        {
+            DataSerializer dataSerializer = new DataSerializer();
+            transactionMgr = dataSerializer.BinaryDeserialize("data.save") as DB338TransactionMgr;
+        }
+
+        public void savestate()
+        {
+            DataSerializer dataSerializer = new DataSerializer();
+            dataSerializer.BinarySerialize(transactionMgr, "data.save");
         }
 
         public QueryResult SubmitQuery(string query)

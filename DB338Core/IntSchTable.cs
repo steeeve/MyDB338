@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace DB338Core
 {
+    [Serializable]
     class IntSchTable
     {
 
