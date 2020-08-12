@@ -385,7 +385,7 @@ namespace DB338Core
 
         private bool ProcessDeleteStatement(List<string> tokens)
         {
-            // Delete FROM <tbl_name> WHERE col = val, ....
+            // Delete FROM <tbl_name> WHERE col = val and ....
 
             string deleteTableName = tokens[2]; // table to delete from
 
@@ -398,7 +398,7 @@ namespace DB338Core
 
                     for (int i = 4; i < tokens.Count; ++i) // loops through  <<col> = <val>, ...>
                     {
-                        if (tokens[i] == ",")
+                        if (tokens[i] == "and")
                         {
                             continue;
                         }

@@ -193,21 +193,39 @@ namespace DB338Core
         {
             int satisfies = 0; // counter for how many conditions we satisfie
             for (int i = 0; i < columns[0].items.Count; ++i)
-            { // looping thru rows of our table
+            { // looping thru rows (i) of our table
                 for (int j = 0; j < columns.Count; ++j)
                 {// going thru ith row of each column
-                    if (toCols.Contains(columns[j].Name))
+
+                    for (int c = 0; c < toCols.Count; ++c)
                     {
-                        if (toVals.Contains(columns[j].items[i]))
+                        if (toCols[c] == columns[j].Name)
                         {
-                            satisfies++;
-                        }
-                        else
-                        {
-                            satisfies = 0;
-                            break; // violated our requirement, move onto next row
+                            if (toVals[c] == columns[j].items[i]) // cond satisfied
+                            {
+                                satisfies++;
+                            }
+                            else // not satisfied, move on to next row
+                            {
+                                j = columns.Count - 1;
+                                satisfies = 0;
+                                break;
+                            }
                         }
                     }
+
+                    //if (toCols.Contains(columns[j].Name))
+                    //{
+                    //    if (toVals.Contains(columns[j].items[i]))
+                    //    {
+                    //        satisfies++;
+                    //    }
+                    //    else
+                    //    {
+                    //        satisfies = 0;
+                    //        break; // violated our requirement, move onto next row
+                    //    }
+                    //}
 
                     if (j == columns.Count - 1 && satisfies == toCols.Count) // here we
                     // are on the last column of the row and have satisfied all the conditions
