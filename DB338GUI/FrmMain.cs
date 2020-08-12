@@ -21,24 +21,6 @@ namespace DB338GUI
             db = new DB338();
         }
 
-        private void BtnSubmitQuery_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < TxtQuery.Lines.Length; ++i)
-            {
-                QueryResult queryResult = db.SubmitQuery(TxtQuery.Lines[i]);
-                string[,] queryResults = queryResult.Results;
-                if (queryResult.Error != "none")
-                {
-                    //null means error
-                    MessageBox.Show("Input SQL contained a " + queryResult.Error + " error." + TxtQuery.Lines[i]);
-                }
-                else 
-                {
-                    Output(queryResults);
-                }
-            }
-        }
-
         public void Output(string[,] results)
         {
             string s = "";
@@ -104,6 +86,21 @@ namespace DB338GUI
         private void button4_Click(object sender, EventArgs e)
         {
             string q = "delete from " + deleteTable.Text + " where " + deleteCond.Text;
+            QueryResult queryResult = db.SubmitQuery(q);
+            string[,] queryResults = queryResult.Results;
+            if (queryResult.Error != "none")
+            {
+                MessageBox.Show("Input SQL contained a " + queryResult.Error + " error.");
+            }
+            else
+            {
+                Output(queryResults);
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            string q = "update " + updateTableName.Text + " set " + updateSetToValues.Text + " where " + updateCond.Text;
             QueryResult queryResult = db.SubmitQuery(q);
             string[,] queryResults = queryResult.Results;
             if (queryResult.Error != "none")

@@ -41,7 +41,7 @@ namespace DB338Core
             }
             else if (type == "delete")
             {
-                success = ProcessDeleteStatement(tokens); // implementing
+                success = ProcessDeleteStatement(tokens); // implemented
             }
             else if (type == "drop")
             {
@@ -304,7 +304,6 @@ namespace DB338Core
             // <Update Stm> ::= UPDATE <Tablename> SET <<col> = <val>, ... > WHERE <<col> = <val> and ... >
             // no support for OR after WHERE
             string updateTableName = tokens[1]; // table to update
-
             foreach (IntSchTable tbl in tables)
             {
                 if (tbl.Name == updateTableName) // found table to update
@@ -317,14 +316,14 @@ namespace DB338Core
 
                     int offset = 0;
 
-                    for (int i = 3; i < tokens.Count; ++i) // loops through {SET} <<col> = <val>, ...>
+                    for (int i = 3; i < tokens.Count; ++i) // loops through <<col> = <val>, ...> WHERE
                     {
-                        if (tokens[i] == "WHERE")    
+                        if (tokens[i] == "where" || tokens[i] == "WHERE")    
                         {
                             offset = i + 1;
                             break;
                         }
-                        else if (tokens[i] == "and")
+                        else if (tokens[i] == ",")
                         {
                             continue;
                         }
@@ -356,22 +355,26 @@ namespace DB338Core
                         }
                     }
 
-
-
                     // by now we have columnNames and columnValues as well as the columnnames and vals of
                     //     where we would like to insert to
 
                     // Check for validity and perform our update
-                    if ((columnNames.Count == columnValues.Count) && 
-                        (toColumnNames.Count == toColumnValues.Count))
+
+                    if (columnNames.Count == columnValues.Count)
                     {
-                        // valid:
-                        tbl.Update(columnNames, columnValues, toColumnNames, toColumnValues);
-                        return true;
+                        if (toColumnValues.Count == toColumnNames.Count)
+                        {
+                            tbl.Update(columnNames, columnValues, toColumnNames, toColumnValues);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                     else
                     {
-                        return false; // invalid input
+                        return false;
                     }
                 }
             }
@@ -396,7 +399,7 @@ namespace DB338Core
                     List<string> columnNames = new List<string>();
                     List<string> columnValues = new List<string>();
 
-                    for (int i = 4; i < tokens.Count; ++i) // loops through  <<col> = <val>, ...>
+                    for (int i = 4; i < tokens.Count; ++i) // loops through  <<col> = <val> and ...>
                     {
                         if (tokens[i] == "and")
                         {

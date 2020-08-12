@@ -175,14 +175,11 @@ namespace DB338Core
         {
             for (int i = 0; i < columns.Count; ++i) // looping thru the columns of our table
             {
-                for (int c = 0; c < cols.Count; ++c) // checking which index our column is
+                for (int c = 0; c < cols.Count; ++c) // looping thru cols to update
                 {
-                    if (cols[c] == columns[i].Name) // this column is in our cols list
+                    if (cols[c] == columns[i].Name) // this column should be updated at row with val[c]
                     {
-                        //columns[i].items[row] = vals[c]; // updating value
-                        // does not update, try
-                        columns[i].items.RemoveAt(row);
-                        columns[i].items.Insert(row, vals[c]);
+                        columns[i].items[row] = vals[c]; // updating value
                         break; // move on to next column
                     }
                 }
@@ -197,35 +194,35 @@ namespace DB338Core
                 for (int j = 0; j < columns.Count; ++j)
                 {// going thru ith row of each column
 
-                    for (int c = 0; c < toCols.Count; ++c)
-                    {
-                        if (toCols[c] == columns[j].Name)
-                        {
-                            if (toVals[c] == columns[j].items[i]) // cond satisfied
-                            {
-                                satisfies++;
-                            }
-                            else // not satisfied, move on to next row
-                            {
-                                j = columns.Count - 1;
-                                satisfies = 0;
-                                break;
-                            }
-                        }
-                    }
-
-                    //if (toCols.Contains(columns[j].Name))
+                    //for (int c = 0; c < toCols.Count; ++c)
                     //{
-                    //    if (toVals.Contains(columns[j].items[i]))
+                    //    if (toCols[c] == columns[j].Name)
                     //    {
-                    //        satisfies++;
-                    //    }
-                    //    else
-                    //    {
-                    //        satisfies = 0;
-                    //        break; // violated our requirement, move onto next row
+                    //        if (toVals[c] == columns[j].items[i]) // cond satisfied
+                    //        {
+                    //            satisfies++;
+                    //        }
+                    //        else // not satisfied, move on to next row
+                    //        {
+                    //            j = columns.Count - 1;
+                    //            satisfies = 0;
+                    //            break;
+                    //        }
                     //    }
                     //}
+
+                    if (toCols.Contains(columns[j].Name))
+                    {
+                        if (toVals.Contains(columns[j].items[i]))
+                        {
+                            satisfies++;
+                        }
+                        else
+                        {
+                            satisfies = 0;
+                            break; // violated our requirement, move onto next row
+                        }
+                    }
 
                     if (j == columns.Count - 1 && satisfies == toCols.Count) // here we
                     // are on the last column of the row and have satisfied all the conditions
