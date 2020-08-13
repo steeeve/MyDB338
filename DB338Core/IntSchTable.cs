@@ -135,6 +135,14 @@ namespace DB338Core
             }
         }
 
+        public void RemoveAll()
+        {
+            for (int i = 0; i < columns[0].items.Count; ++i)
+            {
+                DeleteRow(i);
+            }
+        }
+
         public void Remove(List<string> cols, List<string> vals)
         {
             // go thru all the rows of our table, go thru all the cols/vals, if the current row has it

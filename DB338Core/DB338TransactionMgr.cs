@@ -204,6 +204,12 @@ namespace DB338Core
                             offset = i + 3;
                             break;
                         }
+                        else if (tokens[i] == "*")
+                        {
+                            columnNames = tbl.getAllColumns();
+                            offset = i + 4;
+                            break;
+                        }
                         else if (tokens[i] == ",")
                         {
                             continue;
@@ -407,6 +413,10 @@ namespace DB338Core
                         if (tokens[i] == "and")
                         {
                             continue;
+                        }
+                        else if (tokens[i] == "*")
+                        {
+                            //tbl.RemoveAll
                         }
                         else if (tokens[i] == "=")
                         {
